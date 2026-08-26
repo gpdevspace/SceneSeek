@@ -184,6 +184,13 @@ def run_faces(paths: dict[str, Path], results: list) -> None:
                     f"best impostor {max(impostor.values()):.4f}, margin {margin:+.4f}"))
 
 
+def _pooled(out):
+    """transformers 5.x returns the full vision/text model output from
+    get_image_features / get_text_features, not a pooled tensor (the docstring
+    still shows the old contract). Accept either shape."""
+    return out if hasattr(out, "device") else out.pooler_output
+
+
 def run_visual(paths: dict[str, Path], model_id: str, results: list) -> None:
     import torch
     from transformers import AutoModel, AutoProcessor
@@ -213,8 +220,8 @@ def run_visual(paths: dict[str, Path], model_id: str, results: list) -> None:
                            max_length=config.TEXT_MAX_LENGTH, truncation=True,
                            return_tensors="pt").to(config.DEVICE)
         with torch.no_grad():
-            img_emb = model.get_image_features(**img_in)
-            txt_emb = model.get_text_features(**txt_in)
+            img_emb = _pooled(model.get_image_features(**img_in))
+            txt_emb = _pooled(model.get_text_features(**txt_in))
         out_device = img_emb.device.type
         img_emb = torch.nn.functional.normalize(img_emb, dim=-1)
         txt_emb = torch.nn.functional.normalize(txt_emb, dim=-1)
