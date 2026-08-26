@@ -11,3 +11,6 @@ wheels/
 
 # Local planning docs
 plans/
+
+# Data corpus, index, gallery -- manifests are the reproducible artifact
+data/
