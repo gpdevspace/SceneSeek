@@ -57,3 +57,10 @@ data/                   gitignored; sources.jsonl is the reproducible artifact
 - [ ] Phase 6 — FastAPI side-by-side web demo
 
 See `plans/sceneseek-prototype-plan.md` (gitignored) for the full plan.
+
+## Notes
+
+Per-phase implementation notes — what was built and why, the concepts involved,
+how to read the metrics, and the findings worth carrying forward:
+
+- [Phase 0 — Bootstrap and de-risk the stack](notes/phase-0-bootstrap.md)
